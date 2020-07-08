@@ -30,13 +30,10 @@ Therefore each glyph is 19×38 pixels (i.e.&nbsp;aspect ratio 2).
 [png]: glyphs/ascii.png
 [html]: glyphs/ascii.html
 
-## DONE
-
-1. Convert image to greyscale intensity matrix
-2. Subdivide greyscale intensity matrix into blocks
-
 ## TODO
 
+1. ~~Convert image to greyscale intensity matrix~~
+2. ~~Subdivide greyscale intensity matrix into blocks~~
 3. Select best character for each block by
    1. average intensity
    2. shape
@@ -47,13 +44,13 @@ Therefore each glyph is 19×38 pixels (i.e.&nbsp;aspect ratio 2).
 
 ### Proposed character selection scheme
 
-Will probably base everything on the font DejaVu Sans Mono.
+Basing everything on the font DejaVu Sans Mono.
 
-1. Determine the aspect ratio of glyphs
+1. ~~Determine the aspect ratio of glyphs~~
 
 For all printable ASCII characters `U+0020 SPACE` through `U+007E Tilde`:
 
-1. Precompute average intensity (and build lookup table)
+1. ~~Precompute average intensity (and build lookup table)~~
 2. Precompute 3×3 representations
 
 Then at the character selection step for a given block:
@@ -65,6 +62,8 @@ Then at the character selection step for a given block:
    (according to some norm, which will be chosen by testing)
 
 Finally, put everything together into a main command-line function.
+
+## Remarks
 
 Probably it would be better doing some wavelet transformation
 instead of a simple 3×3 approximation,
