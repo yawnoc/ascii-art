@@ -14,8 +14,8 @@ Not aught, see below.
 
 ## TODO
 
-1. Convert image to grayscale intensity matrix
-2. Subdivide grayscale intensity matrix into blocks
+1. Convert image to greyscale intensity matrix
+2. Subdivide greyscale intensity matrix into blocks
 3. Select best character for each block by
    i. average intensity
    ii. shape
