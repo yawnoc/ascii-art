@@ -19,7 +19,7 @@ Bitstream Vera Fonts, which are ©&nbsp;2003 Bitstream, Inc.
 Glyph images are obtained by taking a screenshot of an [HTML page][html]
 containing nothing except the 95 printable ASCII characters
 `U+0020 SPACE` through `U+007E Tilde`
-rendered in DejaVu Sans Mono in a `<pre>` element with `font-size: 32px`.
+rendered in 32px DejaVu Sans Mono in a `<pre>` element.
 In Firefox 68.10.0esr (64-bit) on Debian&nbsp;10
 this results in a [1805×38-pixel element][png]:
 
