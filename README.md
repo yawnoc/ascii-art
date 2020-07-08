@@ -32,10 +32,10 @@ Therefore each glyph is 10×19 pixels.
 ## DONE
 
 1. Convert image to greyscale intensity matrix
+2. Subdivide greyscale intensity matrix into blocks
 
 ## TODO
 
-2. Subdivide greyscale intensity matrix into blocks
 3. Select best character for each block by
    1. average intensity
    2. shape
