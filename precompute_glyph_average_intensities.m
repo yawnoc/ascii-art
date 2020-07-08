@@ -8,6 +8,8 @@
 ## 3. Re-normalise average intensities to the range [0, 255]
 ## 4. Round average intensities to the nearest integer
 ## 5. Export table to glyphs/precomputed_glyph_average_intensities.txt.
+## Also:
+## 6. Export readable version of table with characters instead of code points.
 
 GLYPHS_IMAGE_FILE = "glyphs/ascii.png";
 
@@ -93,3 +95,26 @@ PRECOMPUTED_TABLE_TEXT_FILE = ...
   "glyphs/precomputed_glyph_average_intensities.txt";
 
 dlmwrite (PRECOMPUTED_TABLE_TEXT_FILE, glyph_average_intensities_table);
+
+## ----------------------------------------------------------------
+## 6.
+## ----------------------------------------------------------------
+
+PRECOMPUTED_TABLE_TEXT_FILE_READABLE = ...
+  "glyphs/precomputed_glyph_average_intensities_readable.txt";
+
+file_id = fopen (PRECOMPUTED_TABLE_TEXT_FILE_READABLE, "w");
+
+for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
+  
+  code_point = glyph_average_intensities_table(i,1);
+  character = char (code_point);
+  
+  average_intensity = glyph_average_intensities_table(i,2);
+  
+  fprintf(file_id, "%s %i", character, average_intensity);
+  fprintf(file_id, "\n");
+  
+endfor
+
+fclose (file_id);
