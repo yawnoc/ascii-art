@@ -37,12 +37,12 @@ Therefore each glyph is 10×19 pixels.
 
 2. Subdivide greyscale intensity matrix into blocks
 3. Select best character for each block by
-   i. average intensity
-   ii. shape
+   1. average intensity
+   2. shape
 4. Return
-   i. plain text (.txt)
-   ii. HTML document with `<pre>` element (.html).
-       Have option for embedded or inline CSS.
+   1. plain text (.txt)
+   2. HTML document with `<pre>` element (.html).
+      Have option for embedded or inline CSS.
 
 ### Proposed character selection scheme
 
