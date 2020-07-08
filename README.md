@@ -43,6 +43,8 @@ Then at the character selection step for a given block:
 4. Choose the character among these with the nearest 3×3 representation
    (according to some norm, which will be chosen by testing)
 
+Finally, put everything together into a main command-line function.
+
 Probably it would be better doing some wavelet transformation
 instead of a simple 3×3 approximation,
 or perhaps even training an AI to do the character selection,
