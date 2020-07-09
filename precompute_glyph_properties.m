@@ -13,6 +13,7 @@
 ## 2. Nits (9-bit representations)
 ##    * Build table with rows [code point, nit]
 ##    * Export table to glyphs/precomputed_glyph_nits.txt.
+##    * Also export graphical version with nits underneath glyphs.
 
 ## ----------------------------------------------------------------
 ## Load glyphs from file
@@ -148,3 +149,49 @@ glyph_nits_table = glyph_properties_table(:, [1, 3]);
 PRECOMPUTED_NITS_TEXT_FILE = "glyphs/precomputed_glyph_nits.txt";
 
 dlmwrite (PRECOMPUTED_NITS_TEXT_FILE, glyph_nits_table);
+
+## Also export graphical
+
+NIT_SIZE_LINEAR = 3;
+NIT_SIZE = NIT_SIZE_LINEAR ^ 2;
+
+nit_graphical_block_height = floor (glyph_height / NIT_SIZE_LINEAR);
+nit_graphical_block_width = floor (glyph_width / NIT_SIZE_LINEAR);
+nit_graphical_block = ...
+  ones (nit_graphical_block_height, nit_graphical_block_width);
+
+nit_graphical_matrix_rows = nit_graphical_block_height * NIT_SIZE_LINEAR;
+nit_graphical_matrix_columns = nit_graphical_block_width * NIT_SIZE_LINEAR;
+
+glyphs_nits_graphical_matrix = ...
+  MAX_INTENSITY(ones (size (glyphs_greyscale_matrix)));
+
+for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
+  
+  nit = glyph_nits_table(i,2);
+  bit_vector = bitget (nit, NIT_SIZE : -1 : 1);
+  bit_matrix = reshape (bit_vector, NIT_SIZE_LINEAR, NIT_SIZE_LINEAR);
+  nit_graphical_matrix = ...
+    MIN_INTENSITY + (MAX_INTENSITY - MIN_INTENSITY) * bit_matrix;
+  nit_graphical_matrix = kron (nit_graphical_matrix, nit_graphical_block);
+  
+  column_offset = (i - 1) * glyph_width;
+  
+  glyphs_nits_graphical_matrix(
+    1 : nit_graphical_matrix_rows,
+    (1 : nit_graphical_matrix_columns) + column_offset
+  ) = nit_graphical_matrix;
+  
+endfor
+
+glyphs_greyscale_with_nits_graphical_matrix = [
+  glyphs_greyscale_matrix
+  glyphs_nits_graphical_matrix
+];
+
+GLYPHS_WITH_NITS_IMAGE_FILE = "glyphs/ascii_with_nits.png";
+
+imwrite (
+  glyphs_greyscale_with_nits_graphical_matrix,
+  GLYPHS_WITH_NITS_IMAGE_FILE
+);
