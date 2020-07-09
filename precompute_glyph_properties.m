@@ -1,15 +1,21 @@
-## precompute_glyph_average_intensities
+## precompute_glyph_properties
 ##
-## Precompute average intensities of the glyphs in glyphs/ascii.png,
+## Precompute properties of the glyphs in glyphs/ascii.png,
 ## assumed to contain glyphs for the 95 printable ASCII characters
-## `U+0020 SPACE` through `U+007E Tilde` in a single row. Then:
-## 1. Build table with rows [code point, average intensity]
-## 2. Sort table by average intensity
-## 3. Re-normalise average intensities to the range [0, 255]
-## 4. Round average intensities to the nearest integer
-## 5. Export table to glyphs/precomputed_glyph_average_intensities.txt.
-## Also:
-## 6. Export readable version of table with characters instead of code points.
+## `U+0020 SPACE` through `U+007E Tilde` in a single row.
+## 1. Average intensities
+##    * Build table with rows [code point, average intensity]
+##    * Sort table by average intensity
+##    * Re-normalise average intensities to the range [0, 255]
+##    * Round average intensities to the nearest integer
+##    * Export table to glyphs/precomputed_glyph_average_intensities.txt.
+##    * Also export readable version with characters instead of code points.
+## 2. Nits (9-bit representations)
+##    (TODO)
+
+## ----------------------------------------------------------------
+## Load glyphs from file
+## ----------------------------------------------------------------
 
 GLYPHS_IMAGE_FILE = "glyphs/ascii.png";
 
@@ -32,24 +38,30 @@ glyphs_block_array = matrix_to_block_array (
 );
 
 ## ----------------------------------------------------------------
-## 1.
+## Compute properties [code point, average intensity]
 ## ----------------------------------------------------------------
 
-glyph_average_intensities_table = zeros (PRINTABLE_ASCII_TOTAL_NUMBER, 2);
+glyph_properties_table = zeros (PRINTABLE_ASCII_TOTAL_NUMBER, 2);
 
 for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
   
   code_point = PRINTABLE_ASCII_CODE_POINT_FIRST + i - 1;
   average_intensity = matrix_to_average_intensity (glyphs_block_array{i});
   
-  glyph_average_intensities_table(i,1) = code_point;
-  glyph_average_intensities_table(i,2) = average_intensity;
+  glyph_properties_table(i,1) = code_point;
+  glyph_properties_table(i,2) = average_intensity;
   
 endfor
 
 ## ----------------------------------------------------------------
-## 2.
+## 1. Average intensities
 ## ----------------------------------------------------------------
+
+## Build table
+
+glyph_average_intensities_table = glyph_properties_table(:, [1, 2]);
+
+## Sort table
 
 glyph_average_intensities_table = ...
   sortrows (glyph_average_intensities_table, 2);
@@ -61,9 +73,7 @@ fprintf ("\nCharacters ordered by glyph average intensity:\n%s{END}\n\n",
   characters_ordered_by_glyph_average_intensity
 )
 
-## ----------------------------------------------------------------
-## 3.
-## ----------------------------------------------------------------
+## Re-normalise average intensities
 
 glyph_average_intensities = glyph_average_intensities_table(:,2);
 
@@ -79,26 +89,20 @@ glyph_average_intensities = (
   * (MAX_INTENSITY - MIN_INTENSITY)
 );
 
-## ----------------------------------------------------------------
-## 4.
-## ----------------------------------------------------------------
+## Round average intensities
 
 glyph_average_intensities = round (glyph_average_intensities);
 
 glyph_average_intensities_table(:,2) = glyph_average_intensities;
 
-## ----------------------------------------------------------------
-## 5.
-## ----------------------------------------------------------------
+## Export table
 
 PRECOMPUTED_TABLE_TEXT_FILE = ...
   "glyphs/precomputed_glyph_average_intensities.txt";
 
 dlmwrite (PRECOMPUTED_TABLE_TEXT_FILE, glyph_average_intensities_table);
 
-## ----------------------------------------------------------------
-## 6.
-## ----------------------------------------------------------------
+## Also export readable version
 
 PRECOMPUTED_TABLE_TEXT_FILE_READABLE = ...
   "glyphs/precomputed_glyph_average_intensities_readable.txt";
