@@ -51,15 +51,14 @@ Basing everything on the font DejaVu Sans Mono.
 For all printable ASCII characters `U+0020 SPACE` through `U+007E Tilde`:
 
 1. ~~Precompute average intensity (and build lookup table)~~
-2. Precompute 3×3 representations
+2. ~~Precompute nit (3×3 or 9-bit representation)~~
 
 Then at the character selection step for a given block:
 1. Compute the average intensity of the block
 2. Compute a window of acceptable intensities
    (for a given tolerance, which will be chosen by testing)
 3. Pick out the characters whose glyph intensity lies within this window
-4. Choose the character whose glyph has the nearest 3×3 representation
-   (according to some norm, which will be chosen by testing)
+4. Choose the character whose glyph has the nearest nit
 
 Finally, put everything together into a main command-line function.
 
