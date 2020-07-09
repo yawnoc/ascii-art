@@ -197,7 +197,7 @@ glyphs_greyscale_with_nits_graphical_matrix = [
   glyphs_nits_graphical_matrix
 ];
 
-GLYPHS_WITH_NITS_IMAGE_FILE = "glyphs/ascii_with_nits.png";
+GLYPHS_WITH_NITS_IMAGE_FILE = "glyphs/ascii_with_nits_graphical.png";
 
 imwrite (
   glyphs_greyscale_with_nits_graphical_matrix,
