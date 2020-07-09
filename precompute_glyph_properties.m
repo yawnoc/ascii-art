@@ -11,7 +11,8 @@
 ##    * Export table to glyphs/precomputed_glyph_average_intensities.txt.
 ##    * Also export readable version with characters instead of code points.
 ## 2. Nits (9-bit representations)
-##    (TODO)
+##    * Build table with rows [code point, nit]
+##    * Export table to glyphs/precomputed_glyph_nits.txt.
 
 ## ----------------------------------------------------------------
 ## Load glyphs from file
@@ -38,18 +39,29 @@ glyphs_block_array = matrix_to_block_array (
 );
 
 ## ----------------------------------------------------------------
+## Choose nit threshold for glyphs
+## ----------------------------------------------------------------
+
+MIN_INTENSITY = 0;
+MAX_INTENSITY = 255;
+
+GLYPH_NIT_THRESHOLD = floor (0.5 * (MAX_INTENSITY - MIN_INTENSITY));
+
+## ----------------------------------------------------------------
 ## Compute properties [code point, average intensity]
 ## ----------------------------------------------------------------
 
-glyph_properties_table = zeros (PRINTABLE_ASCII_TOTAL_NUMBER, 2);
+glyph_properties_table = zeros (PRINTABLE_ASCII_TOTAL_NUMBER, 3);
 
 for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
   
-  code_point = PRINTABLE_ASCII_CODE_POINT_FIRST + i - 1;
-  average_intensity = matrix_to_average_intensity (glyphs_block_array{i});
+  glyph_block = glyphs_block_array{i};
   
-  glyph_properties_table(i,1) = code_point;
-  glyph_properties_table(i,2) = average_intensity;
+  code_point = PRINTABLE_ASCII_CODE_POINT_FIRST + i - 1;
+  average_intensity = matrix_to_average_intensity (glyph_block);
+  nit = matrix_to_nit (glyph_block, GLYPH_NIT_THRESHOLD);
+  
+  glyph_properties_table(i,:) = [code_point, average_intensity, nit];
   
 endfor
 
@@ -80,9 +92,6 @@ glyph_average_intensities = glyph_average_intensities_table(:,2);
 min_glyph_average_intensity = min (glyph_average_intensities);
 max_glyph_average_intensity = max (glyph_average_intensities);
 
-MIN_INTENSITY = 0;
-MAX_INTENSITY = 255;
-
 glyph_average_intensities = (
   (glyph_average_intensities - min_glyph_average_intensity)
   / (max_glyph_average_intensity - min_glyph_average_intensity)
@@ -97,17 +106,20 @@ glyph_average_intensities_table(:,2) = glyph_average_intensities;
 
 ## Export table
 
-PRECOMPUTED_TABLE_TEXT_FILE = ...
+PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE = ...
   "glyphs/precomputed_glyph_average_intensities.txt";
 
-dlmwrite (PRECOMPUTED_TABLE_TEXT_FILE, glyph_average_intensities_table);
+dlmwrite (
+  PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE,
+  glyph_average_intensities_table
+);
 
 ## Also export readable version
 
-PRECOMPUTED_TABLE_TEXT_FILE_READABLE = ...
+PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE_READABLE = ...
   "glyphs/precomputed_glyph_average_intensities_readable.txt";
 
-file_id = fopen (PRECOMPUTED_TABLE_TEXT_FILE_READABLE, "w");
+file_id = fopen (PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE_READABLE, "w");
 
 for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
   
@@ -122,3 +134,17 @@ for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
 endfor
 
 fclose (file_id);
+
+## ----------------------------------------------------------------
+## 2. Nits
+## ----------------------------------------------------------------
+
+## Build table
+
+glyph_nits_table = glyph_properties_table(:, [1, 3]);
+
+## Export table
+
+PRECOMPUTED_NITS_TEXT_FILE = "glyphs/precomputed_glyph_nits.txt";
+
+dlmwrite (PRECOMPUTED_NITS_TEXT_FILE, glyph_nits_table);
