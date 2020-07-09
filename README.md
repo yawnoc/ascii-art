@@ -56,7 +56,7 @@ Precomputed nits for DejaVu Sans Mono glyphs:
 
 ## TODO
 
-* Actually implement the character selection
+* Speed up character selection
 * Export result to plain text (.txt)
 * Export result to HTML
   * Option for embedded or inline CSS
