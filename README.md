@@ -30,37 +30,37 @@ Therefore each glyph is 19×38 pixels (i.e.&nbsp;aspect ratio 2).
 [png]: glyphs/ascii.png
 [html]: glyphs/ascii.html
 
+## Character selection scheme
+
+The general idea is thus:
+
+1. Convert image to greyscale intensity matrix
+2. Subdivide greyscale intensity matrix into blocks
+3. Select best character for each block:
+   1. Compute average intensity of block
+   2. Declare window of acceptable average intensities nigh thereunto
+   3. Preselect characters whose glyph has average intensity in window
+   4. Compute nit of block
+   5. Select character whose glyph has nit closest to nit of block
+
+A "nit" is a 9-bit approximation of an image,
+computed by subdividing the image into 9 blocks (3×3)
+and computing whether the average intensity of each block
+exceeds a specified threshold intensity.
+
+Precomputed nits for DejaVu Sans Mono glyphs:
+
+![The 95 printable ASCII characters with their nits below][nits]
+
+[nits]: glyphs/ascii_with_nits_graphical.png
+
 ## TODO
 
-1. ~~Convert image to greyscale intensity matrix~~
-2. ~~Subdivide greyscale intensity matrix into blocks~~
-3. Select best character for each block by
-   1. average intensity
-   2. shape
-4. Return
-   1. plain text (.txt)
-   2. HTML document with `<pre>` element (.html).
-      Have option for embedded or inline CSS.
-
-### Proposed character selection scheme
-
-Basing everything on the font DejaVu Sans Mono.
-
-1. ~~Determine the aspect ratio of glyphs~~
-
-For all printable ASCII characters `U+0020 SPACE` through `U+007E Tilde`:
-
-1. ~~Precompute average intensity (and build lookup table)~~
-2. ~~Precompute nit (3×3 or 9-bit representation)~~
-
-Then at the character selection step for a given block:
-1. Compute the average intensity of the block
-2. Compute a window of acceptable intensities
-   (for a given tolerance, which will be chosen by testing)
-3. Pick out the characters whose glyph intensity lies within this window
-4. Choose the character whose glyph has the nearest nit
-
-Finally, put everything together into a main command-line function.
+* Actually implement the character selection
+* Export result to plain text (.txt)
+* Export result to HTML
+  * Option for embedded or inline CSS
+* Command line function
 
 ## Remarks
 

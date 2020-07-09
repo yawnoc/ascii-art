@@ -1,7 +1,7 @@
 ## nit = matrix_to_nit (matrix, threshold)
 ##
 ## Convert matrix to 9-bit representation, called "nit":
-## 1. Subdivide matrix into 3-by-3 blocks
+## 1. Subdivide matrix into 9 blocks (3 by 3)
 ## 2. Compute whether average intensity of each block exceeds threshold
 ## 3. Recast resulting boolean values as bits in a bit vector
 ## 4. Convert bit vector to integer.
