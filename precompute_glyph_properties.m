@@ -46,7 +46,7 @@ glyphs_block_array = matrix_to_block_array (
 MIN_INTENSITY = 0;
 MAX_INTENSITY = 255;
 
-GLYPH_NIT_THRESHOLD = floor (0.5 * (MAX_INTENSITY - MIN_INTENSITY));
+GLYPH_NIT_THRESHOLD = floor (0.83 * (MAX_INTENSITY - MIN_INTENSITY));
 
 ## ----------------------------------------------------------------
 ## Compute properties [code point, average intensity]
@@ -58,9 +58,17 @@ for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
   
   glyph_block = glyphs_block_array{i};
   
+  NIT_MARGIN_TOP = 4;
+  NIT_MARGIN_LEFT = 1;
+  glyph_block_for_nit = ...
+    glyph_block(
+      1 + NIT_MARGIN_TOP : end,
+      1 + NIT_MARGIN_LEFT : end
+    );
+  
   code_point = PRINTABLE_ASCII_CODE_POINT_FIRST + i - 1;
   average_intensity = matrix_to_average_intensity (glyph_block);
-  nit = matrix_to_nit (glyph_block, GLYPH_NIT_THRESHOLD);
+  nit = matrix_to_nit (glyph_block_for_nit, GLYPH_NIT_THRESHOLD);
   
   glyph_properties_table(i,:) = [code_point, average_intensity, nit];
   
