@@ -65,7 +65,7 @@ function ascii_art = image_file_to_ascii_art (
   
   if use_nits
     
-    AVERAGE_INTENSITY_TOLERANCE = 10/255;
+    AVERAGE_INTENSITY_TOLERANCE = 0.01;
     
     NIT_THRESHOLD = 0.83;
     
