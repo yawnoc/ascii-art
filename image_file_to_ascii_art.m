@@ -1,9 +1,46 @@
-## ascii_art = image_file_to_ascii_art (file_name, characters_per_line)
-##
+## ascii_art = image_file_to_ascii_art (
+##   file_name, characters_per_line, property, value, ...
+## )
 ## Load image from file and convert to ASCII art.
-## Assumes glyph aspect ratio of 2 (see README.md).
+## Returns ASCII art character array.
+## The following properties may be set:
+## * "output" (default: "")
+##   Name of output file.
+##   If empty, ASCII art is not written to output file.
+##   If non-empty, must be *.html.
 
-function ascii_art = image_file_to_ascii_art (file_name, characters_per_line)
+function ascii_art = image_file_to_ascii_art (
+  file_name, characters_per_line, varargin
+)
+  ERROR_PREFIX = "image_file_to_ascii_art: ";
+  
+  DEFAULT_PROPERTIES = {
+    "output", "",
+    {}{:}
+  };
+  
+  [~, output_file_name] = ...
+    parseparams (varargin, DEFAULT_PROPERTIES{:});
+  
+  if strcmp (output_file_name, "")
+    
+    output_type = "none";
+    
+  elseif !isempty (regexp (output_file_name, "\.html$"))
+    
+    OUTPUT_TEMPLATE_HTML_FILE = "output_template.html";
+    
+    if strcmp (output_file_name, OUTPUT_TEMPLATE_HTML_FILE)
+      error ([ERROR_PREFIX, "You fool. Don't overwrite the template file!"]);
+    endif
+    
+    output_type = "html";
+    
+  else
+    
+    error ([ERROR_PREFIX, "\"output\" must be *.html"]);
+    
+  endif
   
   PRINTABLE_ASCII_CODE_POINT_FIRST = 0x0020;
   
@@ -88,5 +125,25 @@ function ascii_art = image_file_to_ascii_art (file_name, characters_per_line)
   endfor
   
   ascii_art = char (ascii_art);
+  
+  if !strcmp (output_type, "none")
+    
+    ascii_art_string = character_array_to_string (ascii_art);
+    ascii_art_string = escape_html_syntax_characters (ascii_art_string);
+    
+  endif
+  
+  switch (output_type)
+    
+    case "html"
+      
+      output_template_html = fileread (OUTPUT_TEMPLATE_HTML_FILE);
+      title_string = escape_html_syntax_characters (file_name);
+      
+      file_id = fopen (output_file_name, "w");
+      fprintf (file_id, output_template_html, title_string, ascii_art_string);
+      fclose (file_id);
+    
+  endswitch
   
 endfunction
