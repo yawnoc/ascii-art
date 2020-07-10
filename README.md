@@ -28,8 +28,8 @@ this results in a [1805×38-pixel element][png]:
 
 Therefore each glyph is 19×38 pixels (i.e.&nbsp;aspect ratio 2).
 
-[png]: glyphs/ascii.png
-[html]: glyphs/ascii.html
+[png]: glyphs/printable_ascii.png
+[html]: glyphs/printable_ascii.html
 
 ## Character selection
 
