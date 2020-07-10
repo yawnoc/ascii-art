@@ -48,11 +48,8 @@ function ascii_art = image_file_to_ascii_art (
   
   PRINTABLE_ASCII_CODE_POINT_FIRST = 0x0020;
   
-  MIN_INTENSITY = 0;
-  MAX_INTENSITY = 255;
-  
   GLYPH_ASPECT_RATIO = 2;
-  AVERAGE_INTENSITY_TOLERANCE = 10;
+  AVERAGE_INTENSITY_TOLERANCE = 10/255;
   
   PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE = ...
     "glyphs/precomputed_glyph_average_intensities.txt";
@@ -105,14 +102,10 @@ function ascii_art = image_file_to_ascii_art (
     
     block_average_intensity = matrix_to_average_intensity (block);
     
-    average_intensity_window_lower_bound = max (
-      block_average_intensity - AVERAGE_INTENSITY_TOLERANCE,
-      MIN_INTENSITY
-    );
-    average_intensity_window_upper_bound = min (
-      block_average_intensity + AVERAGE_INTENSITY_TOLERANCE,
-      MAX_INTENSITY
-    );
+    average_intensity_window_lower_bound = ...
+      max (block_average_intensity - AVERAGE_INTENSITY_TOLERANCE, 0);
+    average_intensity_window_upper_bound = ...
+      min (block_average_intensity + AVERAGE_INTENSITY_TOLERANCE, 1);
     average_intensity_window = [ ...
       average_intensity_window_lower_bound, ...
       average_intensity_window_upper_bound

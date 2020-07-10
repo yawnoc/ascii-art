@@ -6,8 +6,7 @@
 ## 1. Average intensities
 ##    * Build table with rows [code point, average intensity]
 ##    * Sort table by average intensity
-##    * Re-normalise average intensities to the range [0, 255]
-##    * Round average intensities to the nearest integer
+##    * Re-normalise average intensities to [0, 1]
 ##    * Export table to glyphs/precomputed_glyph_average_intensities.txt.
 ##    * Also export readable version with characters instead of code points.
 ## 2. Nits (9-bit representations)
@@ -43,10 +42,7 @@ glyphs_block_array = matrix_to_block_array (
 ## Choose nit threshold for glyphs
 ## ----------------------------------------------------------------
 
-MIN_INTENSITY = 0;
-MAX_INTENSITY = 255;
-
-GLYPH_NIT_THRESHOLD = floor (0.83 * (MAX_INTENSITY - MIN_INTENSITY));
+GLYPH_NIT_THRESHOLD = 0.83;
 
 ## ----------------------------------------------------------------
 ## Compute properties [code point, average intensity]
@@ -104,12 +100,7 @@ max_glyph_average_intensity = max (glyph_average_intensities);
 glyph_average_intensities = (
   (glyph_average_intensities - min_glyph_average_intensity)
   / (max_glyph_average_intensity - min_glyph_average_intensity)
-  * (MAX_INTENSITY - MIN_INTENSITY)
 );
-
-## Round average intensities
-
-glyph_average_intensities = round (glyph_average_intensities);
 
 glyph_average_intensities_table(:,2) = glyph_average_intensities;
 
@@ -172,15 +163,14 @@ nit_graphical_matrix_rows = nit_graphical_block_height * NIT_SIZE_LINEAR;
 nit_graphical_matrix_columns = nit_graphical_block_width * NIT_SIZE_LINEAR;
 
 glyphs_nits_graphical_matrix = ...
-  MAX_INTENSITY(ones (size (glyphs_greyscale_matrix)));
+  ones (size (glyphs_greyscale_matrix));
 
 for i = 1 : PRINTABLE_ASCII_TOTAL_NUMBER
   
   nit = glyph_nits_table(i,2);
   bit_vector = bitget (nit, NIT_SIZE : -1 : 1);
   bit_matrix = reshape (bit_vector, NIT_SIZE_LINEAR, NIT_SIZE_LINEAR);
-  nit_graphical_matrix = ...
-    MIN_INTENSITY + (MAX_INTENSITY - MIN_INTENSITY) * bit_matrix;
+  nit_graphical_matrix = bit_matrix;
   nit_graphical_matrix = kron (nit_graphical_matrix, nit_graphical_block);
   
   column_offset = (i - 1) * glyph_width;
