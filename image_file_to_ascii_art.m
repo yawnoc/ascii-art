@@ -132,29 +132,39 @@ function ascii_art = image_file_to_ascii_art (
         preselected_average_intensity_index_window(1) : ...
         preselected_average_intensity_index_window(2);
       
-      block_nit = matrix_to_nit (block, NIT_THRESHOLD);
-      
-      preselected_code_points = ...
-        SORTED_CODE_POINTS_VECTOR(preselected_average_intensity_index_range);
-      
-      preselected_nit_indices = ...
-        preselected_code_points - PRINTABLE_ASCII_CODE_POINT_FIRST + 1;
-      
-      preselected_nit_distances = zeros (size (preselected_nit_indices));
-      
-      for j = 1 : numel (preselected_nit_distances)
+      if numel (preselected_average_intensity_index_range) == 1
         
-        preselected_nit_index = preselected_nit_indices(j);
+        average_intensity_index = preselected_average_intensity_index_range;
         
-        preselected_nit = GLYPH_NITS_VECTOR(preselected_nit_index);
-        preselected_nit_distance = nit_distance (block_nit, preselected_nit);
+        best_code_point = SORTED_CODE_POINTS_VECTOR(average_intensity_index);
         
-        preselected_nit_distances(j) = preselected_nit_distance;
+      else
         
-      endfor
-      
-      [~, nearest_nit_first_index] = min (preselected_nit_distances);
-      best_code_point = preselected_code_points(nearest_nit_first_index);
+        block_nit = matrix_to_nit (block, NIT_THRESHOLD);
+        
+        preselected_code_points = ...
+          SORTED_CODE_POINTS_VECTOR(preselected_average_intensity_index_range);
+        
+        preselected_nit_indices = ...
+          preselected_code_points - PRINTABLE_ASCII_CODE_POINT_FIRST + 1;
+        
+        preselected_nit_distances = zeros (size (preselected_nit_indices));
+        
+        for j = 1 : numel (preselected_nit_distances)
+          
+          preselected_nit_index = preselected_nit_indices(j);
+          
+          preselected_nit = GLYPH_NITS_VECTOR(preselected_nit_index);
+          preselected_nit_distance = nit_distance (block_nit, preselected_nit);
+          
+          preselected_nit_distances(j) = preselected_nit_distance;
+          
+        endfor
+        
+        [~, nearest_nit_first_index] = min (preselected_nit_distances);
+        best_code_point = preselected_code_points(nearest_nit_first_index);
+        
+      endif
       
     else
       
