@@ -41,7 +41,6 @@ The general idea is very simple:
 
 ## TODO
 
-* Rewrite precompute script
 * Add graphical output for precompute script and mention in above section
 * Make contrast preprocessing optional and add tweakable parameter
 * Fix aspect ratio (8pt aspect ratio and line height behaviour is different)
