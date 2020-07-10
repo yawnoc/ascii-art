@@ -8,11 +8,6 @@
 ##   Name of output file.
 ##   If empty, ASCII art is not written to output file.
 ##   If non-empty, must be *.html or *.txt.
-## * "nits" (default: true)
-##   Whether to use nits for character selection.
-##   If true, preselect characters within average intensity window
-##   and then select character with nearest nit.
-##   If false, select character purely by average intensity.
 
 function ascii_art = image_file_to_ascii_art (
   file_name, characters_per_line, varargin
@@ -21,10 +16,9 @@ function ascii_art = image_file_to_ascii_art (
   
   DEFAULT_PROPERTIES = {
     "output", "", ...
-    "nits", true, ...
   };
   
-  [~, output_file_name, use_nits] = ...
+  [~, output_file_name] = ...
     parseparams (varargin, DEFAULT_PROPERTIES{:});
   
   if strcmp (output_file_name, "")
@@ -33,13 +27,13 @@ function ascii_art = image_file_to_ascii_art (
     
   elseif !isempty (regexp (output_file_name, "\.html$"))
     
+    output_type = "html";
+    
     OUTPUT_TEMPLATE_HTML_FILE = "output_template.html";
     
     if strcmp (output_file_name, OUTPUT_TEMPLATE_HTML_FILE)
       error ([MESSAGE_PREFIX, "You fool. Don't overwrite the template file!"]);
     endif
-    
-    output_type = "html";
     
   elseif !isempty (regexp (output_file_name, "\.txt$"))
     
@@ -63,41 +57,8 @@ function ascii_art = image_file_to_ascii_art (
   SORTED_CODE_POINTS_VECTOR = GLYPH_AVERAGE_INTENSITIES_TABLE(:,1);
   GLYPH_AVERAGE_INTENSITIES_VECTOR = GLYPH_AVERAGE_INTENSITIES_TABLE(:,2);
   
-  if use_nits
-    
-    AVERAGE_INTENSITY_TOLERANCE = 0.01;
-    
-    NIT_THRESHOLD = 0.83;
-    
-    PRECOMPUTED_NITS_TEXT_FILE = "glyphs/precomputed_glyph_nits.txt";
-    GLYPH_NITS_TABLE = dlmread (PRECOMPUTED_NITS_TEXT_FILE);
-    
-    GLYPH_NITS_VECTOR = GLYPH_NITS_TABLE(:,2);
-    
-  endif
-  
   greyscale_matrix = image_file_to_greyscale_matrix (file_name);
   greyscale_matrix = increase_contrast (greyscale_matrix);
-  
-  NIT_SIZE_LINEAR = 3;
-  image_width = columns (greyscale_matrix);
-  characters_per_line_upper_bound = floor (image_width / NIT_SIZE_LINEAR);
-  
-  if characters_per_line > characters_per_line_upper_bound
-    
-    warning_message = sprintf (
-      [ ...
-        "characters_per_line exceeds floor (image_width / %i) == %i, ", ...
-        "replaced therewith"
-      ],
-      NIT_SIZE_LINEAR,
-      characters_per_line_upper_bound
-    );
-    warning ([MESSAGE_PREFIX, warning_message]);
-    
-    characters_per_line = characters_per_line_upper_bound;
-    
-  endif
   
   characters_per_line = floor (characters_per_line); 
   
@@ -115,65 +76,10 @@ function ascii_art = image_file_to_ascii_art (
     
     block_average_intensity = matrix_to_average_intensity (block);
     
-    if use_nits
-      
-      average_intensity_window_lower_bound = ...
-        max (block_average_intensity - AVERAGE_INTENSITY_TOLERANCE, 0);
-      average_intensity_window_upper_bound = ...
-        min (block_average_intensity + AVERAGE_INTENSITY_TOLERANCE, 1);
-      average_intensity_window = [ ...
-        average_intensity_window_lower_bound, ...
-        average_intensity_window_upper_bound
-      ];
-      
-      preselected_average_intensity_index_window = ...
-        lookup (GLYPH_AVERAGE_INTENSITIES_VECTOR, average_intensity_window);
-      preselected_average_intensity_index_range = ...
-        preselected_average_intensity_index_window(1) : ...
-        preselected_average_intensity_index_window(2);
-      
-      if numel (preselected_average_intensity_index_range) == 1
-        
-        average_intensity_index = preselected_average_intensity_index_range;
-        
-        best_code_point = SORTED_CODE_POINTS_VECTOR(average_intensity_index);
-        
-      else
-        
-        block_nit = matrix_to_nit (block, NIT_THRESHOLD);
-        
-        preselected_code_points = ...
-          SORTED_CODE_POINTS_VECTOR(preselected_average_intensity_index_range);
-        
-        preselected_nit_indices = ...
-          preselected_code_points - PRINTABLE_ASCII_CODE_POINT_FIRST + 1;
-        
-        preselected_nit_distances = zeros (size (preselected_nit_indices));
-        
-        for j = 1 : numel (preselected_nit_distances)
-          
-          preselected_nit_index = preselected_nit_indices(j);
-          
-          preselected_nit = GLYPH_NITS_VECTOR(preselected_nit_index);
-          preselected_nit_distance = nit_distance (block_nit, preselected_nit);
-          
-          preselected_nit_distances(j) = preselected_nit_distance;
-          
-        endfor
-        
-        [~, nearest_nit_first_index] = min (preselected_nit_distances);
-        best_code_point = preselected_code_points(nearest_nit_first_index);
-        
-      endif
-      
-    else
-      
-      average_intensity_index = ...
-        lookup (GLYPH_AVERAGE_INTENSITIES_VECTOR, block_average_intensity);
-      
-      best_code_point = SORTED_CODE_POINTS_VECTOR(average_intensity_index);
-      
-    endif
+    average_intensity_index = ...
+      lookup (GLYPH_AVERAGE_INTENSITIES_VECTOR, block_average_intensity);
+    
+    best_code_point = SORTED_CODE_POINTS_VECTOR(average_intensity_index);
     
     ascii_art(i) = best_code_point;
     
