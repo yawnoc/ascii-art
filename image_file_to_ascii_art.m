@@ -12,7 +12,7 @@
 function ascii_art = image_file_to_ascii_art (
   file_name, characters_per_line, varargin
 )
-  ERROR_PREFIX = "image_file_to_ascii_art: ";
+  MESSAGE_PREFIX = "image_file_to_ascii_art: ";
   
   DEFAULT_PROPERTIES = {
     "output", "",
@@ -31,7 +31,7 @@ function ascii_art = image_file_to_ascii_art (
     OUTPUT_TEMPLATE_HTML_FILE = "output_template.html";
     
     if strcmp (output_file_name, OUTPUT_TEMPLATE_HTML_FILE)
-      error ([ERROR_PREFIX, "You fool. Don't overwrite the template file!"]);
+      error ([MESSAGE_PREFIX, "You fool. Don't overwrite the template file!"]);
     endif
     
     output_type = "html";
@@ -42,7 +42,7 @@ function ascii_art = image_file_to_ascii_art (
     
   else
     
-    error ([ERROR_PREFIX, "\"output\" must be *.html or *.txt"]);
+    error ([MESSAGE_PREFIX, "\"output\" must be *.html or *.txt"]);
     
   endif
   
@@ -68,6 +68,28 @@ function ascii_art = image_file_to_ascii_art (
   GLYPH_NITS_VECTOR = GLYPH_NITS_TABLE(:,2);
   
   greyscale_matrix = image_file_to_greyscale_matrix (file_name);
+  
+  NIT_SIZE_LINEAR = 3;
+  image_width = columns (greyscale_matrix);
+  characters_per_line_upper_bound = floor (image_width / NIT_SIZE_LINEAR);
+  
+  if characters_per_line > characters_per_line_upper_bound
+    
+    warning_message = sprintf (
+      [ ...
+        "characters_per_line exceeds floor (image_width / %i) == %i, ", ...
+        "replaced therewith"
+      ],
+      NIT_SIZE_LINEAR,
+      characters_per_line_upper_bound
+    );
+    warning ([MESSAGE_PREFIX, warning_message]);
+    
+    characters_per_line = characters_per_line_upper_bound;
+    
+  endif
+  
+  characters_per_line = floor (characters_per_line); 
   
   block_array = matrix_to_block_array (
     greyscale_matrix,
