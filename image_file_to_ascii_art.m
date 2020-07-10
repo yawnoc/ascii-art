@@ -7,7 +7,7 @@
 ## * "output" (default: "")
 ##   Name of output file.
 ##   If empty, ASCII art is not written to output file.
-##   If non-empty, must be *.html.
+##   If non-empty, must be *.html or *.txt.
 
 function ascii_art = image_file_to_ascii_art (
   file_name, characters_per_line, varargin
@@ -36,9 +36,13 @@ function ascii_art = image_file_to_ascii_art (
     
     output_type = "html";
     
+  elseif !isempty (regexp (output_file_name, "\.txt$"))
+    
+    output_type = "txt";
+    
   else
     
-    error ([ERROR_PREFIX, "\"output\" must be *.html"]);
+    error ([ERROR_PREFIX, "\"output\" must be *.html or *.txt"]);
     
   endif
   
@@ -129,7 +133,6 @@ function ascii_art = image_file_to_ascii_art (
   if !strcmp (output_type, "none")
     
     ascii_art_string = character_array_to_string (ascii_art);
-    ascii_art_string = escape_html_syntax_characters (ascii_art_string);
     
   endif
   
@@ -137,11 +140,19 @@ function ascii_art = image_file_to_ascii_art (
     
     case "html"
       
+      ascii_art_string = escape_html_syntax_characters (ascii_art_string);
+      
       output_template_html = fileread (OUTPUT_TEMPLATE_HTML_FILE);
       title_string = escape_html_syntax_characters (file_name);
       
       file_id = fopen (output_file_name, "w");
       fprintf (file_id, output_template_html, title_string, ascii_art_string);
+      fclose (file_id);
+    
+    case "txt"
+      
+      file_id = fopen (output_file_name, "w");
+      fprintf (file_id, "%s", ascii_art_string);
       fclose (file_id);
     
   endswitch
