@@ -77,6 +77,7 @@ function ascii_art = image_file_to_ascii_art (
   endif
   
   greyscale_matrix = image_file_to_greyscale_matrix (file_name);
+  greyscale_matrix = increase_contrast (greyscale_matrix);
   
   NIT_SIZE_LINEAR = 3;
   image_width = columns (greyscale_matrix);
