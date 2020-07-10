@@ -39,9 +39,14 @@ The general idea is very simple:
 2. Subdivide greyscale intensity matrix into blocks
 3. Select best character for each block by average intensity
 
+Average intensities for glyphs are precomputed and sorted for lookup:
+
+![The 95 printable ASCII characters sorted by average intensity][intensities]
+
+[intensities]: glyphs/precomputed_average_intensities_graphical.png
+
 ## TODO
 
-* Add graphical output for precompute script and mention in above section
 * Make contrast preprocessing optional and add tweakable parameter
 * Fix aspect ratio (8pt aspect ratio and line height behaviour is different)
 * Move stuff to `resources/` directory

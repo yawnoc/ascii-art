@@ -64,7 +64,8 @@ average_intensities = (
 
 average_intensities_table = [CODE_POINT_RANGE', average_intensities];
 
-average_intensities_table = sortrows (average_intensities_table, 2);
+[average_intensities_table, sorting_indices] = ...
+  sortrows (average_intensities_table, 2);
 
 code_points = average_intensities_table(:,1);
 characters = char (code_points);
@@ -100,6 +101,27 @@ for i = 1 : CODE_POINT_COUNT
 endfor
 
 fclose (file_id);
+
+## ----------------------------------------------------------------
+## Export graphical version of table
+## ----------------------------------------------------------------
+
+glyphs_image_sorted = cell2mat ({glyphs_image_subdivided{sorting_indices}});
+
+glyph_sized_ones = ones (glyph_height, glyph_width);
+
+average_intensities_image = kron (average_intensities', glyph_sized_ones);
+
+average_intensities_table_graphical = ...
+  [glyphs_image_sorted; average_intensities_image];
+
+PRECOMPUTED_AVERAGE_INTENSITIES_IMAGE_FILE_GRAPHICAL = ...
+  "glyphs/precomputed_average_intensities_graphical.png";
+
+imwrite (
+  average_intensities_table_graphical,
+  PRECOMPUTED_AVERAGE_INTENSITIES_IMAGE_FILE_GRAPHICAL
+);
 
 ## ----------------------------------------------------------------
 ## Print info
