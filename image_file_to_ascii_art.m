@@ -50,6 +50,7 @@ function ascii_art = image_file_to_ascii_art (
   
   GLYPH_ASPECT_RATIO = 2;
   AVERAGE_INTENSITY_TOLERANCE = 10/255;
+  NIT_THRESHOLD = 0.83;
   
   PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE = ...
     "glyphs/precomputed_glyph_average_intensities.txt";
@@ -117,7 +118,7 @@ function ascii_art = image_file_to_ascii_art (
       preselected_average_intensity_index_window(1) : ...
       preselected_average_intensity_index_window(2);
     
-    block_nit = matrix_to_nit (block, block_average_intensity);
+    block_nit = matrix_to_nit (block, NIT_THRESHOLD);
     
     preselected_code_points = ...
       SORTED_CODE_POINTS_VECTOR(preselected_average_intensity_index_range);
