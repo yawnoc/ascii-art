@@ -7,7 +7,6 @@
 ##    * Build table with rows [code point, average intensity]
 ##    * Sort table by average intensity
 ##    * Re-normalise average intensities to [0, 1]
-##    * Apply nonlinear transformation to spread out light characters
 ##    * Export table to glyphs/precomputed_glyph_average_intensities.txt.
 ##    * Also export readable version with characters instead of code points.
 ## 2. Nits (9-bit representations)
@@ -102,24 +101,6 @@ glyph_average_intensities = (
   (glyph_average_intensities - min_glyph_average_intensity)
   / (max_glyph_average_intensity - min_glyph_average_intensity)
 );
-
-## Apply nonlinear transformation to spread out light characters
-## ------------------------------------------------
-## Basically we want to remap the intensities so that
-## lighter characters (high average intensity) are spread out more.
-## We therefore require a convex function which maps [0, 1] to [0, 1]
-## and preserves the endpoints 0 and 1.
-## The simplest form would be the power f(x) = x^p for some p > 1,
-## but this clumps the intensities too close together near x = 0.
-## We still want the map to be linear near x = 0, so choose
-##   f(x) = m x + (1 - m) x^p
-## and choose some suitable m < 1, which is the slope at x = 0.
-## ------------------------------------------------
-
-nonlinear_transformation = @(x, m, p) m * x + (1 - m) * x .^ p;
-
-glyph_average_intensities = ...
-  nonlinear_transformation (glyph_average_intensities, 0.7, 2);
 
 glyph_average_intensities_table(:,2) = glyph_average_intensities;
 
