@@ -119,7 +119,7 @@ glyph_average_intensities = (
 nonlinear_transformation = @(x, m, p) m * x + (1 - m) * x .^ p;
 
 glyph_average_intensities = ...
-  nonlinear_transformation (glyph_average_intensities, 0.5, 10);
+  nonlinear_transformation (glyph_average_intensities, 0.7, 2);
 
 glyph_average_intensities_table(:,2) = glyph_average_intensities;
 
