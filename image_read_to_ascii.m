@@ -26,21 +26,21 @@ function ascii_art = image_read_to_ascii (file_name, columns_, varargin)
   ## Configure output
   ## ----------------------------------------------------------------
   
-  if strcmp (output_file_name, "")
+  if (strcmp (output_file_name, ""))
     
     output_type = "none";
     
-  elseif !isempty (regexp (output_file_name, "\.html$"))
+  elseif (! isempty (regexp (output_file_name, "\.html$")))
     
     output_type = "html";
     
     OUTPUT_TEMPLATE_HTML_FILE = "output_template.html";
     
-    if strcmp (output_file_name, OUTPUT_TEMPLATE_HTML_FILE)
+    if (strcmp (output_file_name, OUTPUT_TEMPLATE_HTML_FILE))
       error ([MESSAGE_PREFIX, "You fool. Don't overwrite the template file!"]);
     endif
     
-  elseif !isempty (regexp (output_file_name, "\.txt$"))
+  elseif (! isempty (regexp (output_file_name, "\.txt$")))
     
     output_type = "txt";
     
@@ -114,7 +114,7 @@ function ascii_art = image_read_to_ascii (file_name, columns_, varargin)
   ## Export
   ## ----------------------------------------------------------------
   
-  if !strcmp (output_type, "none")
+  if (! strcmp (output_type, "none"))
     
     ascii_art_string = make_string (ascii_art);
     
