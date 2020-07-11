@@ -97,10 +97,10 @@ function ascii_art = image_file_to_ascii_art (
     
     case "html"
       
-      ascii_art_string = escape_html_syntax_characters (ascii_art_string);
+      ascii_art_string = escape_html (ascii_art_string);
       
       output_template_html = fileread (OUTPUT_TEMPLATE_HTML_FILE);
-      title_string = escape_html_syntax_characters (file_name);
+      title_string = escape_html (file_name);
       
       file_id = fopen (output_file_name, "w");
       fprintf (file_id, output_template_html, title_string, ascii_art_string);
