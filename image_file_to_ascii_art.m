@@ -50,7 +50,7 @@ function ascii_art = image_file_to_ascii_art (
   GLYPH_ASPECT_RATIO = 2;
   
   PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE = ...
-    "glyphs/precomputed_glyph_average_intensities.txt";
+    "glyphs/precomputed_average_intensities.txt";
   GLYPH_AVERAGE_INTENSITIES_TABLE = ...
     dlmread (PRECOMPUTED_AVERAGE_INTENSITIES_TEXT_FILE);
   
