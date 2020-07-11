@@ -27,7 +27,7 @@ glyph_width = columns (glyphs_image) / CODE_POINT_COUNT;
 
 glyph_aspect_ratio = glyph_height / glyph_width;
 
-glyphs_image_subdivided = subdivide_matrix (
+subdivided_glyphs_image = subdivide_matrix (
   glyphs_image,
   CODE_POINT_COUNT,
   glyph_aspect_ratio
@@ -41,7 +41,7 @@ average_intensities = zeros (CODE_POINT_COUNT, 1);
 
 for i = 1 : CODE_POINT_COUNT
   
-  average_intensities(i) = matrix_average (glyphs_image_subdivided{i});
+  average_intensities(i) = matrix_average (subdivided_glyphs_image{i});
   
 endfor
 
@@ -105,7 +105,7 @@ fclose (file_id);
 ## Export graphical version of table
 ## ----------------------------------------------------------------
 
-glyphs_image_sorted = cell2mat ({glyphs_image_subdivided{sorting_indices}});
+glyphs_image_sorted = cell2mat ({subdivided_glyphs_image{sorting_indices}});
 
 glyph_sized_ones = ones (glyph_height, glyph_width);
 
