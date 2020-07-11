@@ -27,7 +27,7 @@ glyph_width = columns (glyphs_image) / CODE_POINT_COUNT;
 
 glyph_aspect_ratio = glyph_height / glyph_width;
 
-glyphs_image_subdivided = matrix_to_block_array (
+glyphs_image_subdivided = subdivide_matrix (
   glyphs_image,
   CODE_POINT_COUNT,
   glyph_aspect_ratio

@@ -62,7 +62,7 @@ function ascii_art = image_file_to_ascii_art (
   
   characters_per_line = floor (characters_per_line); 
   
-  block_array = matrix_to_block_array (
+  block_array = subdivide_matrix (
     greyscale_matrix,
     characters_per_line,
     GLYPH_ASPECT_RATIO
