@@ -74,7 +74,7 @@ function ascii_art = image_file_to_ascii_art (
     
     block = block_array{i};
     
-    block_average_intensity = matrix_to_average_intensity (block);
+    block_average_intensity = matrix_average (block);
     
     average_intensity_index = ...
       lookup (GLYPH_AVERAGE_INTENSITIES_VECTOR, block_average_intensity);

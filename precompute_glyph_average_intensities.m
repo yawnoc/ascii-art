@@ -41,8 +41,7 @@ average_intensities = zeros (CODE_POINT_COUNT, 1);
 
 for i = 1 : CODE_POINT_COUNT
   
-  average_intensities(i) = ...
-    matrix_to_average_intensity (glyphs_image_subdivided{i});
+  average_intensities(i) = matrix_average (glyphs_image_subdivided{i});
   
 endfor
 
