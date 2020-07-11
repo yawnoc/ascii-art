@@ -7,9 +7,7 @@
 
 function new_image = image_resize (old_image, new_size, method = "cubic")
   
-  old_size = size (old_image);
-  old_height = old_size(1);
-  old_width = old_size(2);
+  [old_height, old_width] = size (old_image);
   
   new_height = new_size(1);
   new_width = new_size(2);
