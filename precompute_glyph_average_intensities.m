@@ -20,7 +20,7 @@ CODE_POINT_COUNT = numel (CODE_POINT_RANGE);
 
 GLYPHS_IMAGE_FILE = "glyphs/printable_ascii.png";
 
-glyphs_image = image_file_to_greyscale_matrix (GLYPHS_IMAGE_FILE);
+glyphs_image = image_read_greyscale (GLYPHS_IMAGE_FILE);
 
 glyph_height = rows (glyphs_image);
 glyph_width = columns (glyphs_image) / CODE_POINT_COUNT;

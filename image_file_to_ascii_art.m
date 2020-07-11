@@ -57,7 +57,7 @@ function ascii_art = image_file_to_ascii_art (
   SORTED_CODE_POINTS_VECTOR = GLYPH_AVERAGE_INTENSITIES_TABLE(:,1);
   GLYPH_AVERAGE_INTENSITIES_VECTOR = GLYPH_AVERAGE_INTENSITIES_TABLE(:,2);
   
-  greyscale_matrix = image_file_to_greyscale_matrix (file_name);
+  greyscale_matrix = image_read_greyscale (file_name);
   greyscale_matrix = increase_contrast (greyscale_matrix);
   
   characters_per_line = floor (characters_per_line); 
