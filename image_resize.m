@@ -1,4 +1,5 @@
-## new_image = image_resize (old_image, [new_height, new_width], method)
+## new_image = image_resize (old_image, [new_height, new_width])
+## new_image = image_resize (..., method)
 ##
 ## Resize greyscale image using interpolation.
 ## Default method is "cubic", usually called 'bicubic'.
