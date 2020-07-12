@@ -26,13 +26,13 @@ Available properties (default value):
 * `"glyphs"` (`"resources/dejavu_sans_mono_glyphs.png"`)<br>
   Image file containing glyphs for the 95 printable ASCII characters
   `U+0020 SPACE` through `U+007E TILDE`, arranged in a row from left to right.
-* `"m"` (`1.6`)
+* `"m"` (`1.6`)<br>
    Parameter for increasing contrast. See [image_increase_contrast.m].
-* `"method"` (`"cubic"`)
+* `"method"` (`"cubic"`)<br>
    Method for image-resizing interpolation. See [image_resize.m].
-* `"output"` (`""`)
+* `"output"` (`""`)<br>
    File name to write ASCII art to. If non-empty, must be `*.html` or `*.txt`.
-* `"p"` (`1.3`)
+* `"p"` (`1.3`)<br>
    Parameter for p-norm. See [nearest_neighbour.m].
 
 
