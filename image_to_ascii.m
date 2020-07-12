@@ -44,10 +44,10 @@
 ## 2. Resize image and subdivide into array of blocks
 ## ----------------------------------------------------------------
 ## (a) Compute the size of the ASCII art character array
-##      for the given character per line and glyph aspect ratio.
+##     for the given characters per line and glyph aspect ratio.
 ## (b) Compute the size of the resized image,
-##      which is the size of the image formed by replacing each character
-##      of the character array with a block of the given block size.
+##     which is the size of the image formed by replacing each character
+##     of the character array with a block of the given block size.
 ## (c) Resize the image.
 ## (d) Subdivide the resized image into an array of blocks,
 ##     with the array being the size of the character array
