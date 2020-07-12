@@ -127,7 +127,7 @@ function character_array = image_to_ascii (varargin)
     block_width = block_size_spec (2);
   endif
   
-  block_flattened_width = block_height * block_width;
+  block_flattened_length = block_height * block_width;
   
   ## ----------------------------------------------------------------
   ## 0. Preprocess image
@@ -162,7 +162,7 @@ function character_array = image_to_ascii (varargin)
   
   glyphs_array = image_subdivide (glyphs_image, [1, CODE_POINT_COUNT]);
   
-  glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_width);
+  glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_length);
   for i = 1 : CODE_POINT_COUNT
     glyph = glyphs_array{i};
     glyph = image_resize (glyph, [block_height, block_width]);
