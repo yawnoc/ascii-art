@@ -67,12 +67,7 @@
 ##   Parameter for p-norm. See nearest_neighbour.m.
 
 function character_array = ...
-  image_to_ascii (
-    image_spec,
-    characters_per_line,
-    block_size_spec = 3,
-    varargin
-  )
+  image_to_ascii (image_spec, characters_per_line, varargin)
   
   ## ----------------------------------------------------------------
   ## -2. Constants
@@ -89,6 +84,8 @@ function character_array = ...
   ## -1. Process arguments
   ## ----------------------------------------------------------------
   
+  BLOCK_SIZE_SPEC_DEFAULT = 3;
+  
   PROPERTY_DEFAULTS = {
     "glyphs", "resources/dejavu_sans_mono_glyphs.png", ...
     "method", "cubic", ...
@@ -96,7 +93,7 @@ function character_array = ...
     "p", 2, ...
   };
   
-  [~, ...
+  [regular_optional_arguments, ...
     glyphs_image_file_name, ...
     resizing_method, ...
     output_file_name, ...
@@ -110,6 +107,11 @@ function character_array = ...
     image_ = image_spec;
   endif
   
+  if numel (regular_optional_arguments) > 0
+    block_size_spec = regular_optional_arguments{1};
+  else
+    block_size_spec = BLOCK_SIZE_SPEC_DEFAULT;
+  endif
   if isscalar (block_size_spec)
     block_height = block_width = block_size_spec;
   else
