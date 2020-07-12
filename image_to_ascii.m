@@ -101,19 +101,19 @@ function character_array = image_to_ascii (varargin)
     print_usage;
   endif;
   
-  image_spec = regular_arguments(1);
+  image_spec = regular_arguments{1};
   if ischar (image_spec)
     image_ = imread (image_spec);
   else
     image_ = image_spec;
   endif
   
-  characters_per_line = regular_arguments(2);
+  characters_per_line = regular_arguments{2};
   
   if (regular_argument_count < 3)
     block_size_spec = BLOCK_SIZE_SPEC_DEFAULT;
   else
-    block_size_spec = regular_arguments(3);
+    block_size_spec = regular_arguments{3};
   endif
   if isscalar (block_size_spec)
     block_height = block_width = block_size_spec;
