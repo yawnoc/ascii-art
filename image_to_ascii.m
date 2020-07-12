@@ -117,6 +117,17 @@ function character_array = ...
     block_width = block_size_spec (2);
   endif
   
+  if (strcmp (output_file_name, ""))
+    output_type = "none";
+  elseif (! isempty (regexp (output_file_name, "\.html$")))
+    output_type = "html";
+  elseif (! isempty (regexp (output_file_name, "\.txt$")))
+    output_type = "txt";
+  else
+    error_message = formatted_message ("\"output\" must be *.html or *.txt");
+    error (error_message);
+  endif
+  
   ## ----------------------------------------------------------------
   ## 0. Preprocess image
   ## ----------------------------------------------------------------
@@ -214,6 +225,32 @@ function character_array = ...
   code_point_array = CODE_POINTS(best_glyph_index_array);
   
   character_array = char (code_point_array);
+  
+  ## ----------------------------------------------------------------
+  ## 4. Write to file (if specified)
+  ## ----------------------------------------------------------------
+  
+  if strcmp (output_type, "none")
+    return
+  endif
+  
+  ascii_art_string = make_string (character_array);
+  
+  file_id = fopen (output_file_name, "w");
+  
+  switch (output_type)
+    case "html"
+      title_string = escape_html (output_file_name);
+      ascii_art_string = escape_html (ascii_art_string);
+      output_template_html = fileread ("resources/output_template.html");
+      output_string = ...
+        sprintf (output_template_html, title_string, ascii_art_string);
+    case "txt"
+      output_string = ascii_art_string;
+  endswitch
+  
+  fprintf (file_id, "%s", output_string);
+  fclose (file_id);
   
 endfunction
 
