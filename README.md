@@ -40,6 +40,19 @@ Available properties (default value):
 [nearest_neighbour.m]: nearest_neighbour.m
 
 
+## Gallery
+
+* [anatomy.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/anatomy.html)
+* [bee.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/bee.html)
+* [gish.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/gish.html)
+* [moses.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/moses.html)
+* [piano.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/piano.html)
+* [truman.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/truman.html)
+
+* [black.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/black.html)
+* [white.html](https://htmlpreview.github.io/?https://github.com/yawnoc/ascii-art/blob/master/examples/white.html)
+
+
 ## Font
 
 Any font can be processed by supplying a different glyphs image
