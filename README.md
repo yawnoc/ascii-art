@@ -35,6 +35,10 @@ Available properties (default value):
 * `"p"` (`1.3`)<br>
    Parameter for p-norm. See [nearest_neighbour.m].
 
+[image_increase_contrast.m]: image_increase_contrast.m
+[image_resize.m]: image_resize.m
+[nearest_neighbour.m]: nearest_neighbour.m
+
 
 ## Font
 
@@ -59,6 +63,7 @@ this results in a [1140×24-pixel element][dejavu.png]:
 [dejavu.png]: resources/dejavu_sans_mono_glyphs.png
 [dejavu.html]: resources/dejavu_sans_mono_glyphs.html
 [output template]: resources/output_template.html
+
 
 ## Algorithm
 
