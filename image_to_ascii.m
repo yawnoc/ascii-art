@@ -66,7 +66,13 @@
 ## "p" (2)
 ##   Parameter for p-norm. See nearest_neighbour.m.
 
-function character_array = image_to_ascii (varargin)
+function character_array = ...
+  image_to_ascii (
+    image_spec,
+    characters_per_line,
+    block_size_spec = 3,
+    varargin
+  )
   
   ## ----------------------------------------------------------------
   ## -2. Constants
@@ -83,8 +89,6 @@ function character_array = image_to_ascii (varargin)
   ## -1. Process arguments
   ## ----------------------------------------------------------------
   
-  BLOCK_SIZE_SPEC_DEFAULT = 3;
-  
   PROPERTY_DEFAULTS = {
     "glyphs", "resources/dejavu_sans_mono_glyphs.png", ...
     "method", "cubic", ...
@@ -92,8 +96,7 @@ function character_array = image_to_ascii (varargin)
     "p", 2, ...
   };
   
-  [
-    regular_arguments, ...
+  [~, ...
     glyphs_image_file_name, ...
     resizing_method, ...
     output_file_name, ...
@@ -101,34 +104,18 @@ function character_array = image_to_ascii (varargin)
   ] ...
     = parseparams (varargin, PROPERTY_DEFAULTS{:});
   
-  regular_argument_count = numel (regular_arguments);
-  
-  if (regular_argument_count < 2 || regular_argument_count > 3)
-    print_usage;
-  endif;
-  
-  image_spec = regular_arguments{1};
   if ischar (image_spec)
     image_ = imread (image_spec);
   else
     image_ = image_spec;
   endif
   
-  characters_per_line = regular_arguments{2};
-  
-  if (regular_argument_count < 3)
-    block_size_spec = BLOCK_SIZE_SPEC_DEFAULT;
-  else
-    block_size_spec = regular_arguments{3};
-  endif
   if isscalar (block_size_spec)
     block_height = block_width = block_size_spec;
   else
     block_height = block_size_spec (1);
     block_width = block_size_spec (2);
   endif
-  
-  block_flattened_length = block_height * block_width;
   
   ## ----------------------------------------------------------------
   ## 0. Preprocess image
@@ -164,6 +151,8 @@ function character_array = image_to_ascii (varargin)
   glyphs_array = image_subdivide (glyphs_image, [1, CODE_POINT_COUNT]);
   
   glyph_average_intensities = zeros (CODE_POINT_COUNT, 1);
+  
+  block_flattened_length = block_height * block_width;
   glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_length);
   
   for i = 1 : CODE_POINT_COUNT
