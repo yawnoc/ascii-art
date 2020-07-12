@@ -22,7 +22,7 @@
 ##   d) Resize each glyph subimage to the given block size.
 ##   e) Build a data set matrix whose rows are flattened glyph subimages.
 ## ----------------------------------------------------------------
-## 2. Resize image into array of blocks
+## 2. Resize image and subdivide into array of blocks
 ## ----------------------------------------------------------------
 ##   a) Compute the size of the ASCII art character array
 ##      for the given character per line and glyph aspect ratio.
@@ -130,6 +130,8 @@ function character_array = image_to_ascii (varargin)
   
   image_ = image_to_greyscale (image_);
   
+  [image_height, image_width] = size (image_);
+  
   ## ----------------------------------------------------------------
   ## 1. Process glyphs and build data set
   ## ----------------------------------------------------------------
@@ -162,6 +164,24 @@ function character_array = image_to_ascii (varargin)
     flattened_glyph = glyph(:)';
     glyph_data_set(i,:) = flattened_glyph;
   endfor
+  
+  ## ----------------------------------------------------------------
+  ## 2. Resize image and subdivide into array of blocks
+  ## ----------------------------------------------------------------
+  
+  character_array_columns = characters_per_line;
+  character_cell_width = image_width / character_array_columns;
+  character_cell_height = character_cell_width * glyph_aspect_ratio;
+  character_array_rows = ceil (image_height / character_cell_height);
+  character_array_size = [character_array_rows, character_array_columns];
+  
+  resized_image_height = character_array_rows * block_height;
+  resized_image_width = character_array_columns * block_width;
+  resized_image_size = [resized_image_height, resized_image_width];
+  
+  resized_image = image_resize (image_, resized_image_size);
+  
+  blocks_array = image_subdivide (resized_image, character_array_size);
   
   ## ----------------------------------------------------------------
   ## Infinity
