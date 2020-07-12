@@ -2,35 +2,40 @@
 ##
 ## Convert images in examples directory to ASCII art.
 
-EXAMPLES_DIRECTORY = "examples";
-CHARACTERS_PER_LINE = 120;
+image_to_ascii ("examples/anatomy.jpg", 160, [7, 3],
+  "m", 0,
+  "output", "examples/anatomy.html"
+);
 
-jpg_files = dir (fullfile (EXAMPLES_DIRECTORY, "*.jpg"));
-png_files = dir (fullfile (EXAMPLES_DIRECTORY, "*.png"));
-image_files = [
-  jpg_files;
-  png_files;
-];
+image_to_ascii ("examples/bee.jpg", 160, [7, 3],
+  "m", 2,
+  "p", 1,
+  "output", "examples/bee.html"
+);
 
-OUTPUT_EXTS = {".html", ".txt"};
+image_to_ascii ("examples/gish.jpg", 140,
+  "m", 0.5,
+  "output", "examples/gish.html"
+);
 
-for image_file = image_files'
-  
-  image_file_name = fullfile (EXAMPLES_DIRECTORY, image_file.name);
-  [~, file_name_no_ext] = fileparts (image_file_name);
-  
-  for n = 1 : numel (OUTPUT_EXTS)
-    
-    output_file_name = fullfile (
-      EXAMPLES_DIRECTORY,
-      [file_name_no_ext, OUTPUT_EXTS{n}]
-    );
-    image_to_ascii (
-      image_file_name,
-      CHARACTERS_PER_LINE,
-      "output", output_file_name
-    );
-    
-  endfor
-  
-endfor
+image_to_ascii ("examples/moses.jpg", 120,
+  "m", 1.5,
+  "output", "examples/moses.html"
+);
+
+image_to_ascii ("examples/piano.jpg", 160,
+  "output", "examples/piano.html"
+);
+
+image_to_ascii ("examples/truman.jpg", 120,
+  "p", 2.3,
+  "output", "examples/truman.html"
+);
+
+image_to_ascii ("examples/black.png", 79,
+  "output", "examples/black.html"
+);
+
+image_to_ascii ("examples/white.png", 79,
+  "output", "examples/white.html"
+);
