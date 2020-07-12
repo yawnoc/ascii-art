@@ -84,7 +84,7 @@ function character_array = ...
   ## -1. Process arguments
   ## ----------------------------------------------------------------
   
-  BLOCK_SIZE_SPEC_DEFAULT = 3;
+  BLOCK_SIZE_SPEC_DEFAULT = [6, 3];
   
   PROPERTY_DEFAULTS = {
     "glyphs", "resources/dejavu_sans_mono_glyphs.png", ...
