@@ -52,7 +52,7 @@
 ## Available properties (default value):
 ## "glyphs" ("resources/dejavu_sans_mono_glyphs.png")
 ##   Image file containing glyphs for the 95 printable ASCII characters
-##   U+0020 SPACE through U+007E Tilde, arranged in a row from left to right.
+##   U+0020 SPACE through U+007E TILDE, arranged in a row from left to right.
 ## "method" ("cubic")
 ##   Method for image-resizing interpolation. See image_resize.m.
 ## "output" ("")
@@ -63,19 +63,30 @@
 function character_array = image_to_ascii (varargin)
   
   ## ----------------------------------------------------------------
+  ## -2. Constants
+  ## ----------------------------------------------------------------
+  
+  CODE_POINT_FIRST = 0x0020;
+  CODE_POINT_LAST = 0x007E;
+  CODE_POINTS = CODE_POINT_FIRST : CODE_POINT_LAST;
+  CODE_POINT_COUNT = numel (CODE_POINTS);
+  
+  MESSAGE_PREFIX = "image_to_ascii: ";
+  
+  ## ----------------------------------------------------------------
   ## -1. Process arguments
   ## ----------------------------------------------------------------
   
   BLOCK_SIZE_SPEC_DEFAULT = 3;
   
-  PROPERTY_DEFAULTS = { ...
+  PROPERTY_DEFAULTS = {
     "glyphs", "resources/dejavu_sans_mono_glyphs.png", ...
     "method", "cubic", ...
     "output", "", ...
     "p", 2, ...
   };
   
-  [ ...
+  [
     regular_arguments, ...
     glyphs_image_file_name, ...
     resizing_method, ...
@@ -111,6 +122,51 @@ function character_array = image_to_ascii (varargin)
     block_width = block_size_spec (2);
   endif
   
+  block_flattened_size = block_height * block_width;
+  
+  ## ----------------------------------------------------------------
+  ## 1. Process glyphs and build data set
+  ## ----------------------------------------------------------------
+  
+  glyphs_image = imread (glyphs_image_file_name);
+  glyphs_image = image_to_greyscale (glyphs_image);
+  glyphs_image_width = columns (glyphs_image);
+  if (mod (glyphs_image_width, CODE_POINT_COUNT) != 0)
+    error_message = sprintf (
+      [
+        "Glyph image width is not divisible by %i, " ...
+        "the number of characters from U+0020 SPACE to U+007E TILDE." ...
+      ],
+      CODE_POINT_COUNT
+    );
+    error_message = formatted_message (error_message);
+    error (error_message);
+  endif
+  
+  glyph_height = rows (glyphs_image);
+  glyph_width = glyphs_image_width / CODE_POINT_COUNT;
+  glyph_aspect_ratio = glyph_height / glyph_width;
+  
+  glyphs_array = image_subdivide (glyphs_image, [1, CODE_POINT_COUNT]);
+  
+  glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_size);
+  for i = 1 : CODE_POINT_COUNT
+    glyph = glyphs_array{i};
+    glyph = image_resize (glyph, [block_height, block_width]);
+    flattened_glyph = glyph(:)';
+    glyph_data_set(i,:) = flattened_glyph;
+  endfor
+  
+  ## ----------------------------------------------------------------
+  ## Infinity
+  ## ----------------------------------------------------------------
+  
   character_array = [];
+  
+endfunction
+
+function formatted_message = format_message (message)
+  
+  formatted_message = sprintf ("image_to_ascii: %s", message);
   
 endfunction
