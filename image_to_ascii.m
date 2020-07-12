@@ -37,10 +37,9 @@
 ## (e) Resize each glyph subimage to the given block size.
 ## (f) Build a data set matrix whose rows are the
 ##     flattened resized glyph subimages.
-## (g) Determine the sorting of the glyphs by average intensity in (d).
-## (h) Adjust the data set so that the average intensities (row averages)
-##     increase linearly from 0 to 1 according to the sorting in (g).
-##     Clipping is necessary (and will distort the linearity slightly).
+## (g) Normalise the glyph average intensities in (d) to the range [0, 1].
+## (h) Adjust the data set so that its average intensities (row averages)
+##     are close to the normalised glyph average intensities in (g).
 ## ----------------------------------------------------------------
 ## 2. Resize image and subdivide into array of blocks
 ## ----------------------------------------------------------------
@@ -182,14 +181,19 @@ function character_array = ...
     glyph_data_set(i,:) = flattened_glyph;
   endfor
   
-  [~, glyph_sorting_indices] = sort (glyph_average_intensities);
+  min_average_intensity = min (glyph_average_intensities);
+  max_average_intensity = max (glyph_average_intensities);
+  normalised_glyph_average_intensities = (
+    (glyph_average_intensities - min_average_intensity)
+      / (max_average_intensity - min_average_intensity)
+  );
   
-  for j = 1 : CODE_POINT_COUNT
-    glyph_index = glyph_sorting_indices(j);
-    old_average = glyph_average_intensities(glyph_index);
-    new_average = (j - 1) / (CODE_POINT_COUNT - 1);
-    glyph_data_set(glyph_index,:) += new_average - old_average;
-  endfor
+  glyph_data_set_average_intensities = mean (glyph_data_set, 2);
+  
+  average_intensity_adjustments = ...
+    normalised_glyph_average_intensities - glyph_data_set_average_intensities;
+  
+  glyph_data_set += average_intensity_adjustments;
   
   glyph_data_set = max (glyph_data_set, 0);
   glyph_data_set = min (glyph_data_set, 1);
