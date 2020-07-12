@@ -125,6 +125,12 @@ function character_array = image_to_ascii (varargin)
   block_flattened_size = block_height * block_width;
   
   ## ----------------------------------------------------------------
+  ## 0. Preprocess image
+  ## ----------------------------------------------------------------
+  
+  image_ = image_to_greyscale (image_);
+  
+  ## ----------------------------------------------------------------
   ## 1. Process glyphs and build data set
   ## ----------------------------------------------------------------
   
