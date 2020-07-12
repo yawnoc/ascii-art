@@ -64,10 +64,12 @@ this results in a [1140×24-pixel element][dejavu.png]:
 
 ### TLDR
 
-* Resize the image by interpolation (default bicubic) into an array of blocks.
-* Resize the font glyphs into blocks of the same size.
+* Resize each font glyph into a block of a prescribed size.
+* Resize the image by into an array of blocks of the same size.
 * Select the best character for each block by seeking the nearest neighbour
   amongst the font glyph blocks.
+
+Resizing is done via interpolation (default bicubic).
 
 The glyph aspect ratio is already taken care of
 when computing the size of the array of blocks
