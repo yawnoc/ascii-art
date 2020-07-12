@@ -19,12 +19,13 @@
 ##   b) Compute the glyph aspect ratio.
 ##   c) Subdivide the glyphs image file into a cell array,
 ##      with one glyph per subimage.
-##   d) Resize each glyph subimage to the given block size.
-##   e) Build a data set matrix whose rows are flattened glyph subimages.
-##   f) Compute the average intensities (row averages) for the data set,
-##      and determine the sorting of the glyphs thereby.
-##   g) Adjust the glyphs so that their average intensities
-##      increase linearly from 0 to 1 according to the sorting.
+##   d) Compute the average intensity of each glyph subimage.
+##   e) Resize each glyph subimage to the given block size.
+##   f) Build a data set matrix whose rows are the
+##      flattened resized glyph subimages.
+##   g) Determine the sorting of the glyphs by average intensity in d).
+##   h) Adjust the data set so that the average intensities (row averages)
+##      increase linearly from 0 to 1 according to the sorting in g).
 ##      Clipping is necessary (and will distort the linearity slightly).
 ## ----------------------------------------------------------------
 ## 2. Resize image and subdivide into array of blocks
@@ -162,15 +163,17 @@ function character_array = image_to_ascii (varargin)
   
   glyphs_array = image_subdivide (glyphs_image, [1, CODE_POINT_COUNT]);
   
+  glyph_average_intensities = zeros (CODE_POINT_COUNT, 1);
   glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_length);
+  
   for i = 1 : CODE_POINT_COUNT
     glyph = glyphs_array{i};
+    glyph_average_intensities(i) = mean (glyph(:));
     glyph = image_resize (glyph, [block_height, block_width]);
     flattened_glyph = glyph(:)';
     glyph_data_set(i,:) = flattened_glyph;
   endfor
   
-  glyph_average_intensities = mean (glyph_data_set, 2);
   [~, glyph_sorting_indices] = sort (glyph_average_intensities);
   
   for j = 1 : CODE_POINT_COUNT
