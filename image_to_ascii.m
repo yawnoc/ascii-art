@@ -5,19 +5,19 @@
 ## character_array = image_to_ascii (..., property, value, ...)
 ##
 ## Convert image to ASCII art character array.
-## Default block size specification is [6, 3].
+## Default block size specification is [5, 3].
 ##
 ## Available properties (default value):
 ## "glyphs" ("resources/dejavu_sans_mono_glyphs.png")
 ##   Image file containing glyphs for the 95 printable ASCII characters
 ##   U+0020 SPACE through U+007E TILDE, arranged in a row from left to right.
-## "m" (1.3)
+## "m" (1.6)
 ##   Parameter for increasing contrast. See image_increase_contrast.m.
 ## "method" ("cubic")
 ##   Method for image-resizing interpolation. See image_resize.m.
 ## "output" ("")
 ##   File name to write ASCII art to. If non-empty, must be *.html or *.txt.
-## "p" (2)
+## "p" (1.3)
 ##   Parameter for p-norm. See nearest_neighbour.m.
 ##
 ## The algorithm is thus:
@@ -86,14 +86,14 @@ function character_array = ...
   ## -1. Process arguments
   ## ----------------------------------------------------------------
   
-  BLOCK_SIZE_SPEC_DEFAULT = [6, 3];
+  BLOCK_SIZE_SPEC_DEFAULT = [5, 3];
   
   PROPERTY_DEFAULTS = {
     "glyphs", "resources/dejavu_sans_mono_glyphs.png", ...
-    "m", 1.3, ...
+    "m", 1.6, ...
     "method", "cubic", ...
     "output", "", ...
-    "p", 2, ...
+    "p", 1.3, ...
   };
   
   [regular_optional_arguments, ...
