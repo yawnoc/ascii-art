@@ -184,10 +184,26 @@ function character_array = image_to_ascii (varargin)
   blocks_array = image_subdivide (resized_image, character_array_size);
   
   ## ----------------------------------------------------------------
-  ## Infinity
+  ## 3. Select best characters
   ## ----------------------------------------------------------------
   
-  character_array = [];
+  best_glyph_index_array = zeros (character_array_size);
+  
+  for i = 1 : numel (blocks_array)
+    
+    block = blocks_array{i};
+    flattened_block = block(:)';
+    
+    [~, ~, best_glyph_index] = ...
+      nearest_neighbour (flattened_block, glyph_data_set, norm_p);
+    
+    best_glyph_index_array(i) = best_glyph_index;
+    
+  endfor
+  
+  code_point_array = CODE_POINTS(best_glyph_index_array);
+  
+  character_array = char (code_point_array);
   
 endfunction
 
