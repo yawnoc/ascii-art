@@ -1,6 +1,6 @@
 ## escaped_string = escape_html (string_)
 ##
-## Escape the three HTML syntax characters &, <, >.
+## Escape HTML syntax characters &, <, >.
 
 function escaped_string = escape_html (string_)
   
