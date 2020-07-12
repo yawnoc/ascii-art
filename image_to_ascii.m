@@ -18,9 +18,14 @@
 ##   a) Import the glyphs image file.
 ##   b) Compute the glyph aspect ratio.
 ##   c) Subdivide the glyphs image file into a cell array,
-##        with one glyph per subimage.
+##      with one glyph per subimage.
 ##   d) Resize each glyph subimage to the given block size.
 ##   e) Build a data set matrix whose rows are flattened glyph subimages.
+##   f) Compute the average intensities (row averages) for the data set,
+##      and determine the sorting of the glyphs thereby.
+##   g) Adjust the glyphs so that their average intensities
+##      increase linearly from 0 to 1 according to the sorting.
+##      Clipping is necessary (and will distort the linearity slightly).
 ## ----------------------------------------------------------------
 ## 2. Resize image and subdivide into array of blocks
 ## ----------------------------------------------------------------
@@ -122,7 +127,7 @@ function character_array = image_to_ascii (varargin)
     block_width = block_size_spec (2);
   endif
   
-  block_flattened_size = block_height * block_width;
+  block_flattened_width = block_height * block_width;
   
   ## ----------------------------------------------------------------
   ## 0. Preprocess image
@@ -157,13 +162,26 @@ function character_array = image_to_ascii (varargin)
   
   glyphs_array = image_subdivide (glyphs_image, [1, CODE_POINT_COUNT]);
   
-  glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_size);
+  glyph_data_set = zeros (CODE_POINT_COUNT, block_flattened_width);
   for i = 1 : CODE_POINT_COUNT
     glyph = glyphs_array{i};
     glyph = image_resize (glyph, [block_height, block_width]);
     flattened_glyph = glyph(:)';
     glyph_data_set(i,:) = flattened_glyph;
   endfor
+  
+  glyph_average_intensities = mean (glyph_data_set, 2);
+  [~, glyph_sorting_indices] = sort (glyph_average_intensities);
+  
+  for j = 1 : CODE_POINT_COUNT
+    glyph_index = glyph_sorting_indices(j);
+    old_average = glyph_average_intensities(glyph_index);
+    new_average = (j - 1) / (CODE_POINT_COUNT - 1);
+    glyph_data_set(glyph_index,:) += new_average - old_average;
+  endfor
+  
+  glyph_data_set = max (glyph_data_set, 0);
+  glyph_data_set = min (glyph_data_set, 1);
   
   ## ----------------------------------------------------------------
   ## 2. Resize image and subdivide into array of blocks
