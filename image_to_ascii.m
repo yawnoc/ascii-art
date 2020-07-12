@@ -171,7 +171,7 @@ function character_array = ...
   for i = 1 : CODE_POINT_COUNT
     glyph = glyphs_array{i};
     glyph_average_intensities(i) = mean (glyph(:));
-    glyph = image_resize (glyph, [block_height, block_width]);
+    glyph = image_resize (glyph, [block_height, block_width], resizing_method);
     flattened_glyph = glyph(:)';
     glyph_data_set(i,:) = flattened_glyph;
   endfor
@@ -202,7 +202,7 @@ function character_array = ...
   resized_image_width = character_array_columns * block_width;
   resized_image_size = [resized_image_height, resized_image_width];
   
-  resized_image = image_resize (image_, resized_image_size);
+  resized_image = image_resize (image_, resized_image_size, resizing_method);
   
   blocks_array = image_subdivide (resized_image, character_array_size);
   
