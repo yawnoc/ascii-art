@@ -10,50 +10,50 @@
 ## ----------------------------------------------------------------
 ## 0. Preprocess image
 ## ----------------------------------------------------------------
-##   a) Convert the image to greyscale.
-##   b) TODO: increase contrast of the image.
+## (a) Convert the image to greyscale.
+## (b) TODO: increase contrast of the image.
 ## ----------------------------------------------------------------
 ## 1. Process glyphs and build data set
 ## ----------------------------------------------------------------
-##   a) Import the glyphs image file.
-##   b) Compute the glyph aspect ratio.
-##   c) Subdivide the glyphs image file into a cell array,
-##      with one glyph per subimage.
-##   d) Compute the average intensity of each glyph subimage.
-##   e) Resize each glyph subimage to the given block size.
-##   f) Build a data set matrix whose rows are the
-##      flattened resized glyph subimages.
-##   g) Determine the sorting of the glyphs by average intensity in d).
-##   h) Adjust the data set so that the average intensities (row averages)
-##      increase linearly from 0 to 1 according to the sorting in g).
-##      Clipping is necessary (and will distort the linearity slightly).
+## (a) Import the glyphs image file.
+## (b) Compute the glyph aspect ratio.
+## (c) Subdivide the glyphs image file into a cell array,
+##     with one glyph per subimage.
+## (d) Compute the average intensity of each glyph subimage.
+## (e) Resize each glyph subimage to the given block size.
+## (f) Build a data set matrix whose rows are the
+##     flattened resized glyph subimages.
+## (g) Determine the sorting of the glyphs by average intensity in (d).
+## (h) Adjust the data set so that the average intensities (row averages)
+##     increase linearly from 0 to 1 according to the sorting in (g).
+##     Clipping is necessary (and will distort the linearity slightly).
 ## ----------------------------------------------------------------
 ## 2. Resize image and subdivide into array of blocks
 ## ----------------------------------------------------------------
-##   a) Compute the size of the ASCII art character array
+## (a) Compute the size of the ASCII art character array
 ##      for the given character per line and glyph aspect ratio.
-##   b) Compute the size of the resized image,
+## (b) Compute the size of the resized image,
 ##      which is the size of the image formed by replacing each character
 ##      of the character array with a block of the given block size.
-##   c) Resize the image.
-##   d) Subdivide the resized image into an array of blocks,
-##      with the array being the size of the character array
-##      and the blocks therefore being the given block size.
+## (c) Resize the image.
+## (d) Subdivide the resized image into an array of blocks,
+##     with the array being the size of the character array
+##     and the blocks therefore being the given block size.
 ## ----------------------------------------------------------------
 ## 3. Select best characters
 ## ----------------------------------------------------------------
-##   a) For each block in the array of blocks,
-##      flatten the block and find the index of the nearest neighbour
-##      in the glyph data set.
-##   b) Convert the glyph index to its corresponding code point.
-##      Thus build an array of code points.
-##   c) Convert the code point array to a character array.
+## (a) For each block in the array of blocks,
+##     flatten the block and find the index of the nearest neighbour
+##     in the glyph data set.
+## (b) Convert the glyph index to its corresponding code point.
+##     Thus build an array of code points.
+## (c) Convert the code point array to a character array.
 ## ----------------------------------------------------------------
 ## 4. Write to file (if specified)
 ## ----------------------------------------------------------------
-##   a) Convert the character array to a string.
-##   b) Fill the appropriate template.
-##   c) Write to file.
+## (a) Convert the character array to a string.
+## (b) Fill the appropriate template.
+## (c) Write to file.
 ##
 ## Available properties (default value):
 ## "glyphs" ("resources/dejavu_sans_mono_glyphs.png")
