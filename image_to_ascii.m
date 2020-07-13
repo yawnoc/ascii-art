@@ -80,8 +80,6 @@ function character_array = ...
   CODE_POINTS = CODE_POINT_FIRST : CODE_POINT_LAST;
   CODE_POINT_COUNT = numel (CODE_POINTS);
   
-  MESSAGE_PREFIX = "image_to_ascii: ";
-  
   ## ----------------------------------------------------------------
   ## -1. Process arguments
   ## ----------------------------------------------------------------
@@ -130,7 +128,7 @@ function character_array = ...
   elseif (! isempty (regexp (output_file_name, "\.txt$")))
     output_type = "txt";
   else
-    error_message = formatted_message ("\"output\" must be *.html or *.txt");
+    error_message = format_message ("\"output\" must be *.html or *.txt");
     error (error_message);
   endif
   
@@ -153,12 +151,13 @@ function character_array = ...
   if (mod (glyphs_image_width, CODE_POINT_COUNT) != 0)
     error_message = sprintf (
       [
-        "Glyph image width is not divisible by %i, " ...
+        "Glyph image width %i is not divisible by %i, " ...
         "the number of characters from U+0020 SPACE to U+007E TILDE." ...
       ],
+      glyphs_image_width,
       CODE_POINT_COUNT
     );
-    error_message = formatted_message (error_message);
+    error_message = format_message (error_message);
     error (error_message);
   endif
   
