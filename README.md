@@ -23,7 +23,7 @@ image_to_ascii (..., property, value, ...)
 Returns ASCII art character array.
 
 Available properties (default value):
-* `"glyphs"` (`"resources/dejavu_sans_mono_glyphs.png"`)<br>
+* `"glyphs"` ([`"resources/dejavu_sans_mono_glyphs.png"`][dejavu.png])<br>
   Image file containing glyphs for the 95 printable ASCII characters
   `U+0020 SPACE` through `U+007E TILDE`, arranged in a row from left to right.
 * `"m"` (`1.6`)<br>
