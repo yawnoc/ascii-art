@@ -10,7 +10,7 @@
 
 function new_image = image_increase_contrast (old_image, m)
   
-  if m == 0
+  if (m == 0)
     
     new_image = old_image;
     

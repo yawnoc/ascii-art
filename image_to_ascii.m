@@ -103,18 +103,18 @@ function character_array = ...
   ] ...
     = parseparams (varargin, PROPERTY_DEFAULTS{:});
   
-  if ischar (image_spec)
+  if (ischar (image_spec))
     image_ = imread (image_spec);
   else
     image_ = image_spec;
   endif
   
-  if numel (regular_optional_arguments) > 0
+  if (numel (regular_optional_arguments) > 0)
     block_size_spec = regular_optional_arguments{1};
   else
     block_size_spec = BLOCK_SIZE_SPEC_DEFAULT;
   endif
-  if isscalar (block_size_spec)
+  if (isscalar (block_size_spec))
     block_height = block_width = block_size_spec;
   else
     block_height = block_size_spec (1);
@@ -243,7 +243,7 @@ function character_array = ...
   ## 4. Write to file (if specified)
   ## ----------------------------------------------------------------
   
-  if strcmp (output_ext, "")
+  if (strcmp (output_ext, ""))
     return
   endif
   
