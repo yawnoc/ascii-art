@@ -121,13 +121,15 @@ function character_array = ...
     block_width = block_size_spec (2);
   endif
   
-  if (strcmp (output_file_name, ""))
-    output_type = "none";
-  elseif (! isempty (regexp (output_file_name, "\.html$")))
-    output_type = "html";
-  elseif (! isempty (regexp (output_file_name, "\.txt$")))
-    output_type = "txt";
-  else
+  [~, output_file_name_no_ext, output_ext] = fileparts (output_file_name);
+  
+  output_file_name_allowed = (
+    strcmp (output_file_name, "")
+    || strcmp (output_ext, ".html")
+    || strcmp (output_ext, ".txt")
+  );
+  
+  if (! output_file_name_allowed)
     error_message = format_message ("\"output\" must be *.html or *.txt");
     error (error_message);
   endif
@@ -241,7 +243,7 @@ function character_array = ...
   ## 4. Write to file (if specified)
   ## ----------------------------------------------------------------
   
-  if strcmp (output_type, "none")
+  if strcmp (output_ext, "")
     return
   endif
   
@@ -249,14 +251,14 @@ function character_array = ...
   
   file_id = fopen (output_file_name, "w");
   
-  switch (output_type)
-    case "html"
+  switch (output_ext)
+    case ".html"
       title_string = escape_html (output_file_name);
       ascii_art_string = escape_html (ascii_art_string);
       output_template_html = fileread ("resources/output_template.html");
       output_string = ...
         sprintf (output_template_html, title_string, ascii_art_string);
-    case "txt"
+    case ".txt"
       output_string = ascii_art_string;
   endswitch
   
