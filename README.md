@@ -21,6 +21,7 @@ image_to_ascii (..., property, value, ...)
 ```
 
 Returns ASCII art character array.
+The default block size is `[5, 3]`.
 
 Available properties (default value):
 * `"glyphs"` ([`"resources/dejavu_sans_mono_glyphs.png"`][dejavu.png])<br>
@@ -34,6 +35,14 @@ Available properties (default value):
    File name to write ASCII art to. If non-empty, must be `*.html` or `*.txt`.
 * `"p"` (`1.3`)<br>
    Parameter for p-norm. See [nearest_neighbour.m].
+
+The best values for block size and the parameters `m` and `p`
+depend on the image being converted.
+
+Currently the image preprocessing consists only of an increase in contrast
+using a nonlinear transformation which fixes the intensities 0, 1/2, and 1.
+This does not work well for some images,
+and ought to be replaced by a better transformation.
 
 [image_increase_contrast.m]: image_increase_contrast.m
 [image_resize.m]: image_resize.m
@@ -87,6 +96,8 @@ this results in a [1140×24-pixel element][dejavu.png]:
 * Select the best character for each block by seeking the nearest neighbour
   amongst the font glyph blocks.
 
+### Some details
+
 Resizing is done via interpolation (default bicubic).
 
 The glyph aspect ratio is already taken care of
@@ -103,7 +114,7 @@ The blocks should not be too fine, both because the conversion becomes slow
 and because it doesn't make sense to use blocks which have a finer granularity
 than the resolution of the glyph images.
 
-### In full
+### Full details
 
 0. Preprocess image
    1. Convert the image to greyscale.
