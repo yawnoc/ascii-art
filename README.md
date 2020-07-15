@@ -2,6 +2,8 @@
 
 An image to ASCII-art converter, implemented in GNU Octave.
 
+Licensed under "MIT No Attribution" (MIT-0), see [LICENSE].
+
 Inspired by [Stack Overflow 32987103][so] by Spektre.
 
 [so]: https://stackoverflow.com/q/32987103
